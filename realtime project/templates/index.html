@@ -1,0 +1,150 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cyber Deception Project</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #111;
+      padding: 1em;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease-in-out;
+    }
+    .navbar a:hover {
+      border-color: #00ffff;
+      color: #00ffff;
+      transform: scale(1.05);
+    }
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #00ffff;
+    }
+    .container {
+      padding: 2em;
+    }
+    .login-box, .data-box, .dashboard {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2em;
+      margin: 2em auto;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 10px #00ffff;
+    }
+    input, button {
+      width: 100%;
+      padding: 0.8em;
+      margin: 0.5em 0;
+      border: none;
+      border-radius: 5px;
+    }
+    input {
+      background: #333;
+      color: #fff;
+    }
+    button {
+      background: #00ffff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #fff;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #00ffff;
+      text-align: center;
+    }
+    tr:hover {
+      background: rgba(0, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">🛡️ CyberSecure</div>
+    <a href="/">Home</a>
+    <a href="/">Login</a>
+    <a href="#">Register</a>
+    <a href="#">Contact Us</a>
+    <a href="#">Dashboard</a>
+  </div>
+
+  <div class="container" id="home">
+    {% if not username %}
+      <form method="POST" class="login-box" id="login">
+        <h2>Login</h2>
+        <input name="username" placeholder="Enter Username" required>
+        <input type="password" name="password" placeholder="Enter Password" required>
+        <button type="submit">Access Data</button>
+      </form>
+    {% else %}
+      <div class="data-box">
+        <h2>Welcome, {{ username }}!</h2>
+        <ul>
+          <li><strong>Name:</strong> {{ data.name }}</li>
+          <li><strong>Email:</strong> {{ data.email }}</li>
+          <li><strong>SSN:</strong> {{ data.ssn }}</li>
+          <li><strong>Balance:</strong> {{ data.balance }}</li>
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if logs %}
+      <div class="dashboard" id="dashboard">
+        <h2>Access Logs</h2>
+        <table>
+          <tr><th>User</th><th>IP</th><th>Type</th><th>Time</th></tr>
+          {% for log in logs %}
+            <tr>
+              <td>{{ log[0] }}</td>
+              <td>{{ log[1] }}</td>
+              <td>{{ 'Deceptive' if log[2] else 'Genuine' }}</td>
+              <td>{{ log[3] }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% endif %}
+  </div>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
